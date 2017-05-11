@@ -1,0 +1,74 @@
+<style class="fox_global_style">div.fox_html_content { line-height: 1.5; }div.fox_html_content { font-size: 10.5pt; font-family: Calibri; color: rgb(0, 0, 0); line-height: 1.5; }</style>
+<div>
+	<span id="_FoxCURSOR"/>
+	<br>
+		<table border="1" bordercolor="#000000" cellpadding="2" cellspacing="0" style="font-size: 10pt; border-collapse:collapse; border:none" width="50%">
+			<tbody>
+				<tr>
+					<td width="16%" style="border: solid 1 #000000" nowrap="">
+						<font size="2" face="Verdana">
+							<div>
+								<span style="background-color: window; line-height: 1.5;">&nbsp;</span><b style="line-height: 1.5;">Run Time(UTC)</b>
+							</div>
+						</font>
+					</td>
+					<td width="16%" style="border: solid 1 #000000" nowrap="">
+						<font size="2" face="Verdana">
+							<div>
+								<b>&nbsp;Project</b>
+							</div>
+						</font>
+					</td>
+					<td width="16%" style="border: solid 1 #000000" nowrap="">
+						<font size="2" face="Verdana">
+							<div>
+								<b>&nbsp;Release.Build</b>
+							</div>
+						</font>
+					</td>
+					<td width="16%" style="border: solid 1 #000000" nowrap="">
+						<font size="2" face="Verdana">
+							<div>
+								<b>&nbsp;Automation Version</b>
+							</div>
+						</font>
+					</td>
+					<td width="16%" style="border: solid 1 #000000" nowrap="">
+						<font size="2" face="Verdana">
+							<div>
+								<b>&nbsp;Result</b>
+							</div>
+						</font>
+					</td>
+				</tr>
+				<tr>
+					<td width="16%" style="border: solid 1 #000000" nowrap="">
+						<font size="2" face="Verdana">
+							<div>&nbsp;${run_time}</div>
+						</font>
+					</td>
+					<td width="16%" style="border: solid 1 #000000" nowrap="">
+						<font size="2" face="Verdana">
+							<div>&nbsp;${project}</div>
+						</font>
+					</td>
+					<td width="16%" style="border: solid 1 #000000" nowrap="">
+						<font size="2" face="Verdana">
+							<div>&nbsp;${release_build}</div>
+						</font>
+					</td>
+					<td width="16%" style="border: solid 1 #000000" nowrap="">
+						<font size="2" face="Verdana">
+							<div>&nbsp;${test_version}</div>
+						</font>
+					</td>
+					<td width="16%" style="border: solid 1 #000000" nowrap="">
+						<font size="2" face="Verdana">
+							<div>&nbsp;<a href="${reportlink}" style="line-height: 1.5; background-color: window; text-decoration: none !important;" class="">${result}</a>
+							</div>
+						</font>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>

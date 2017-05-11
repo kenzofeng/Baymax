@@ -1,0 +1,1 @@
+nohup python /usr/local/apps/Baymax/manage.py runserver 0.0.0.0:5105 > /usr/local/logs/baymax.log 2>&1 &
