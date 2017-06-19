@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Baymax.iml" filepath="$PROJECT_DIR$/.idea/Baymax.iml" />
+      <module fileurl="file://$USER_HOME$/PycharmProjects/Dformat/.idea/Dformat.iml" filepath="$USER_HOME$/PycharmProjects/Dformat/.idea/Dformat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Doraemon/.idea/Doraemon.iml" filepath="$PROJECT_DIR$/../Doraemon/.idea/Doraemon.iml" />
+      <module fileurl="file://D:/svn/warrior-test/Test/dscloud/.idea/dscloud.iml" filepath="D:/svn/warrior-test/Test/dscloud/.idea/dscloud.iml" />
     </modules>
   </component>
 </project>
