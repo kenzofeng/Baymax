@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
+import os
 from engine import env
 from engine.job import *
 from models import Job_Test, Map, Test_Log, Job
@@ -192,15 +193,16 @@ def testproject_getall(request):
     list_project = Project.objects.all()
     return HttpResponse(serializers.serialize("json", list_project), content_type='application/json')
 
+
 def testlab_getall(request):
     results = []
     list_project = Project.objects.all()
     for project in list_project:
         tests = []
         maps = Map.objects.filter(project=project.name, use=True)
-        mylab={'name':project.name,'tests':tests}
+        mylab = {'name': project.name, 'tests': tests}
         for map in maps:
-            tests.append({'name':map.test,'url':map.testurl,'parameter':map.robot_parameter})
+            tests.append({'name': map.test, 'url': map.testurl, 'parameter': map.robot_parameter})
         results.append(mylab)
     return HttpResponse(json.dumps(results), content_type='application/json')
 
