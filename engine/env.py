@@ -24,6 +24,6 @@ output_xml = 'output.xml'
 deps = 'deps'
 email = os.path.join(BASE_DIR, project, 'email.xml')
 
-receiver = 'daniel.liu@derbysoft.com'
+# receiver = 'daniel.liu@derbysoft.com'
 
 variables = {'${project_revision}': ""}
