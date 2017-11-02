@@ -12,10 +12,19 @@ else:
 opath = os.getcwd()
 project = 'project'
 app = 'app'
-dev = os.path.join(BASE_DIR, project, 'dev')
+# dev = os.path.join(BASE_DIR, project, 'dev')
+
 test = os.path.join(BASE_DIR, project, 'test_automation')
 report = os.path.join(BASE_DIR, project, 'report')
 log = os.path.join(BASE_DIR, project, 'log')
+
+if not os.path.exists(test):
+    os.makedirs(test)
+if not os.path.exists(report):
+    os.makedirs(report)
+if not os.path.exists(log):
+    os.makedirs(log)
+
 top_build = 'top_build'
 
 log_html = 'log.html'
