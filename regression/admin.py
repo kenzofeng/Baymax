@@ -1,15 +1,15 @@
 from django.contrib import admin
 
-from .models import Svn,Project,Map,Job,Job_Test,build,Log
+from .models import Svn,Project,Map,Job,Job_Test,Log
 
 class SvnAdmin(admin.ModelAdmin):
     list_display=['name']
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display=['name','scm','devurl','email']
+    list_display=['name','email']
 
 class MapAdmin(admin.ModelAdmin):
-    list_display=['project','test','testurl','robot_parameter','war','use']
+    list_display=['project','test','testurl','robot_parameter','use']
     list_filter=('project','use')
         
 class job_test_Inline(admin.TabularInline):
@@ -23,7 +23,7 @@ class JobTestsAdmin(admin.ModelAdmin):
     list_display=['job','robot_parameter','name','status','report']  
 
 class JobAdmin(admin.ModelAdmin):
-    list_display=['project','status','start_time','end_time','build_command','job_number','dev_revision_number']
+    list_display=['project','status','start_time','end_time']
     inlines=[job_test_Inline,log_Inline]
 
 class buildAdmin(admin.ModelAdmin):
@@ -34,5 +34,4 @@ admin.site.register(Project,ProjectAdmin)
 admin.site.register(Map,MapAdmin)
 admin.site.register(Job,JobAdmin)
 admin.site.register(Job_Test,JobTestsAdmin)
-admin.site.register(build,buildAdmin)
 admin.site.register(Log)

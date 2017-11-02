@@ -2,177 +2,153 @@
 <html ng-app="TestProjectModule">
 <head>
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'regression/semantic/dist/semantic.min.css' %}" >
+    <link rel="stylesheet" type="text/css" href="{% static 'regression/semantic/dist/semantic.min.css' %}">
     <title>TestProject</title>
 </head>
 <body ng-controller="testpCtrl">
-    <div class="ui inverted dimmer" id="pageloader">
-        <div class="ui large text loader">Loading</div>
-    </div>
-    <div class="ui grid">
-        <div class="sixteen wide column">{% include 'regression/nav.html'%}</div>
-        <div class="ui internally celled grid" >
-            <div class="row">
-                <div class="twelve wid column">
-                    <div  id="addf" class="ui tiny primary button"> <i class="plus icon"></i>
-                        testproject
-                    </div>
+<div class="ui inverted dimmer" id="pageloader">
+    <div class="ui large text loader">Loading</div>
+</div>
+<div class="ui grid">
+    <div class="sixteen wide column">{% include 'regression/nav.html'%}</div>
+    <div class="ui internally celled grid">
+        <div class="row">
+            <div class="twelve wid column">
+                <div id="addf" class="ui tiny primary button"><i class="plus icon"></i>
+                    testproject
                 </div>
             </div>
-            <div class="row">
-                <div class="three wide column">
-                    <div class="ui animated selection divided list">
-                        <div class="item" id="{% templatetag openvariable %} tf.pk {% templatetag closevariable %}" ng-repeat="tf in testprojects" ng-click="getproject($event.target)">
-                            <div class="content">
-                                <div class="header" ng-cloak>
-                                    <span ng-bind="tf.pk" ></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        </div>
+        <div class="row">
+            <div class="three wide column">
+                <div class="ui vertical fluid small pointing menu">
+                    <a class="item" id="{% templatetag openvariable %} tf.pk {% templatetag closevariable %}"
+                       ng-repeat="tf in testprojects" ng-click="getproject($event.target)" ng-bind="tf.pk">
+                    </a>
                 </div>
-                <div class="thirteen wide column" style="display:none">
-                    <div class="ui inverted dimmer" id="loader">
-                        <div class="ui text loader">Loading</div>
-                    </div>
-                    <form class="ui form" id="tform" method="post" enctype="multipart/form-data">
-                        <h4 class="ui blue dividing header">Develop Information</h4>
-                        <input type="text" name="pk" ng-model="pk" style="display:none">
-                        <div class="three fields">
-                            <div class="required field">
-                                <label>Name:</label>
-                                <input type="text" name="name" ng-model="name"></div>
-                            <div class="required field">
-                                <label>SCM:</label>
-                                <div class="ui search selection dropdown scm">
-                                    <input type="hidden" name="scm"> <i class="dropdown icon"></i>
-                                    <div class="text" ng-model='scm'></div>
-                                    <div class="menu">
-                                        <div class="item" ng-repeat="s in scms" data-value="{% templatetag openvariable %}s.name {% templatetag closevariable %}">
-                                            {% templatetag openvariable %} s.name {% templatetag closevariable %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label>Email:</label>
-                                <input type="text" name="email" ng-model="email" placeholder="aaa@derbysoft.com;bbb@derbysoft.com"></div>
-                        </div>
-                        <div class="two fields">
-                            <div class="required field">
-                                <label>DevURL:</label>
-                                <input type="text" name="url" ng-model="url"></div>
-                            <div class="field">
-                                <label>Branch:</label>
-                                <input type="text" name="branch" ng-model="branch"></div>
-                        </div>
+            </div>
+            <div class="thirteen wide column" style="display:none">
+                <div class="ui inverted dimmer" id="loader">
+                    <div class="ui text loader">Loading</div>
+                </div>
+                <form class="ui form" id="tform" method="post" enctype="multipart/form-data">
+                    <h4 class="ui blue dividing header">Information</h4>
+                    <input type="text" name="pk" ng-model="pk" style="display:none">
+                    <div class="two fields">
+                        <div class="required field">
+                            <label>Name:</label>
+                            <input type="text" name="name" ng-model="name"></div>
                         <div class="field">
-                            <label>Build Command:</label>
-                            <input type="text" name="build" ng-model="build"></div>
-                        <h4 class="ui blue header">Test Automation</h4>
-                        <div id='maps'>
-                            <div id="map-{% templatetag openvariable %}map.pk{% templatetag closevariable %}" ng-repeat="map in maps">
+                            <label>Email:</label>
+                            <input type="text" name="email" ng-model="email"
+                                   placeholder="aaa@derbysoft.com;bbb@derbysoft.com"></div>
+                    </div>
+                    <h4 class="ui blue header">Test Automation</h4>
+                    <div id='maps'>
+                        <div id="map-{% templatetag openvariable %}map.pk{% templatetag closevariable %}"
+                             ng-repeat="map in maps">
                             <h4 class="ui blue dividing header"></h4>
-                                <div class="two fields">
-                                    <div class="required field">
-                                        <label>Test Project Name:</label>
-                                        <input type="text" name="map-test-{% templatetag openvariable %}map.pk{% templatetag closevariable %}" ng-model="map.test"></div>
-                                    <div class="required field">
-                                        <label>Automation URL:</label>
-                                        <input type="text" name="map-url-{% templatetag openvariable %}map.pk{% templatetag closevariable %}" ng-model="map.url" ></div>
-                                </div>
-                                <div class="two fields">
-                                    <div class="required field">
-                                        <label>WARs:</label>
-                                        <input type="text" name="map-war-{% templatetag openvariable %}map.pk{% templatetag closevariable %}" ng-model="map.war" placeholder='xxxx.war:appname,xxxx.war:appname' ></div>
-                                    <div class="field">
-                                        <label>Robot Parameters:</label>
-                                        <input type="text" name="map-robot-{% templatetag openvariable %}map.pk{% templatetag closevariable %}" ng-model="map.robot"></div>
-                                </div>
-                               <button  class="ui red button">Delete</button >
+                            <div class="two fields">
+                                <div class="required field">
+                                    <label>Test Project Name:</label>
+                                    <input type="text"
+                                           name="map-test-{% templatetag openvariable %}map.pk{% templatetag closevariable %}"
+                                           ng-model="map.test"></div>
+                                <div class="required field">
+                                    <label>Automation URL:</label>
+                                    <input type="text"
+                                           name="map-url-{% templatetag openvariable %}map.pk{% templatetag closevariable %}"
+                                           ng-model="map.url"></div>
                             </div>
+                            <div class="field">
+                                <label>Robot Parameters:</label>
+                                <input type="text"
+                                       name="map-robot-{% templatetag openvariable %}map.pk{% templatetag closevariable %}"
+                                       ng-model="map.robot"></div>
+                            <button class="ui red button">Delete</button>
                         </div>
-                        <input type="text" name="mapcount" ng-model="maps[maps.length-1].pk" style="display:none">
-                        <h4 class="ui blue dividing header"></h4>
-                        <div  id="ttladd" class="ui blue small labeled icon button" ng-click="ttladd()">
-                            <i class="plus icon"></i>
-                            Add Automation
+                    </div>
+                    <input type="text" name="mapcount" ng-model="maps[maps.length-1].pk" style="display:none">
+                    <h4 class="ui blue dividing header"></h4>
+                    <div id="ttladd" class="ui blue small labeled icon button" ng-click="ttladd()">
+                        <i class="plus icon"></i>
+                        Add Automation
+                    </div>
+                    <h4 class="ui blue dividing header"></h4>
+                    <div class="ui grid">
+                        <div class="left floated column">
+                            <div class="ui red right small button" ng-click="delete()">Delete</div>
                         </div>
-                        <h4 class="ui blue dividing header"></h4>
-                        <div class="ui grid">
-                            <div class="left floated column">
-                                <div class="ui red right small button" ng-click="delete()">Delete</div>
-                            </div>
-                            <div class="right floated column">
-                                <div class="ui blue right submit small button" ng-click="update()">Save</div>
-                            </div>
+                        <div class="right floated column">
+                            <div class="ui blue right submit small button" ng-click="update()">Save</div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="ui large modal" id="newtestproject">
-        <i class="close icon"></i>
-        <div class="header">Test Project</div>
-        <div class="content">
-            <form class="ui form" id="newtform" method="post">
-                <h4 class="ui blue dividing header">Test Project Name</h4>
-                <div class="tow fields">
-                    <div class="required eight wide field">
-                        <label>Name:</label>
-                        <input type="text" name="name"></div>
-                </div>
-            </form>
-        </div>
-        <div class="actions">
-            <div class="ui red deny button">Cancel</div>
-            <div class="ui green approve button">Save</div>
-        </div>
+</div>
+<div class="ui large modal" id="newtestproject">
+    <i class="close icon"></i>
+    <div class="header">Test Project</div>
+    <div class="content">
+        <form class="ui form" id="newtform" method="post">
+            <h4 class="ui blue dividing header">Test Project Name</h4>
+            <div class="tow fields">
+                <div class="required eight wide field">
+                    <label>Name:</label>
+                    <input type="text" name="name"></div>
+            </div>
+        </form>
     </div>
-    <div class="ui modal" id="updatemessage">
-        <div class="header">Message</div>
-        <div class="content"></div>
-        <div class="actions">
-            <div class="ui green approve button">OK</div>
-        </div>
+    <div class="actions">
+        <div class="ui red deny button">Cancel</div>
+        <div class="ui green approve button">Save</div>
     </div>
-    <div class="ui modal" id="deletemessage">
-        <div class="header">Message</div>
-        <div class="content">Delete Successful</div>
-        <div class="actions">
-            <div class="ui green approve button">OK</div>
-        </div>
+</div>
+<div class="ui modal" id="updatemessage">
+    <div class="header">Message</div>
+    <div class="content"></div>
+    <div class="actions">
+        <div class="ui green approve button">OK</div>
     </div>
-    <div class="ui modal" id="xmlmodal">
-        <i class="close icon"></i>
-        <div class="header">Data</div>
-        <div class="content">
-            <textarea id='textxml' style='height:600px;width:100%'></textarea>
-        </div>
-        <div class="actions">
-            <div class="ui cancel button">Cancel</div>
-            <div class="ui green approve button">Save</div>
-        </div>
+</div>
+<div class="ui modal" id="deletemessage">
+    <div class="header">Message</div>
+    <div class="content">Delete Successful</div>
+    <div class="actions">
+        <div class="ui green approve button">OK</div>
     </div>
-    <div class="ui modal" id="csvmodal">
-        <i class="close icon"></i>
-        <div class="header">Data</div>
-        <div class="content">
-            <textarea id='textcsv' style='height:600px;width:100%'></textarea>
-        </div>
-        <div class="actions">
-            <div class="ui cancel button">Cancel</div>
-            <div class="ui green approve button">Save</div>
-        </div>
+</div>
+<div class="ui modal" id="xmlmodal">
+    <i class="close icon"></i>
+    <div class="header">Data</div>
+    <div class="content">
+        <textarea id='textxml' style='height:600px;width:100%'></textarea>
     </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancel</div>
+        <div class="ui green approve button">Save</div>
+    </div>
+</div>
+<div class="ui modal" id="csvmodal">
+    <i class="close icon"></i>
+    <div class="header">Data</div>
+    <div class="content">
+        <textarea id='textcsv' style='height:600px;width:100%'></textarea>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancel</div>
+        <div class="ui green approve button">Save</div>
+    </div>
+</div>
 </body>
-    <script src="{% static 'regression/js/jquery-3.0.0.min.js' %}"></script>
-    <script src="{% static 'regression/js/jquery.cookie.js' %}"></script>
-    <script src="{% static 'regression/js/jquery.form.js' %}"></script>
-    <script src="{% static 'regression/js/angular.min.js' %}"></script>
-    <script src="{% static 'regression/semantic/dist/semantic.min.js' %}"></script>
-    <script type="text/javascript">
+<script src="{% static 'regression/js/jquery-3.0.0.min.js' %}"></script>
+<script src="{% static 'regression/js/jquery.cookie.js' %}"></script>
+<script src="{% static 'regression/js/jquery.form.js' %}"></script>
+<script src="{% static 'regression/js/angular.min.js' %}"></script>
+<script src="{% static 'regression/semantic/dist/semantic.min.js' %}"></script>
+<script type="text/javascript">
         function addtest(id){
             var str = "<div id='map-"+id+"' >"
                     +"<h4 class='ui blue dividing header'></h4>"
@@ -196,10 +172,33 @@
                     +"</div>"
             return str
         };
-    </script>
-    <script type="text/javascript">
+
+
+</script>
+<script type="text/javascript">
         $(function(){
             $('#testproject').addClass('active');
+            var
+            $menuItem = $('.menu .item'),
+            $dropdown = $('.dropdown'),
+        // alias
+            handler = {
+                activate: function() {
+                    if(!$(this).hasClass('dropdown')) {
+                        $(this)
+                                .addClass('active')
+                                .closest('.ui.menu')
+                                .find('.item')
+                                .not($(this))
+                                .removeClass('active')
+                        ;
+                    }
+                }
+
+            }
+            ;
+        $menuItem.on('click', handler.activate);
+        $dropdown.dropdown('save defaults');
             $('#maps').on('click','.red.button',function(){
             $(this).parent().remove();
             });
@@ -222,22 +221,23 @@
                     .modal('show');
             });
         })
-    </script>
-    <script type="text/javascript">
+
+
+</script>
+<script type="text/javascript">
         var TestProjectModule=angular.module('TestProjectModule', []);
         TestProjectModule.controller('testpCtrl',['$scope','$http','$compile',
             function($scope,$http,$compile){
-                $http.get('/regression/testproject/getall').success(function(result){
+                $http.get('/testproject/getall').success(function(result){
                     $scope.testprojects=result
-                });
-                $http.get('/regression/scm/getall').success(function(result){
-                    $scope.scms=result.scms
                 });
                 $scope.getproject=function(target){
                 $('#loader').dimmer("show");
                 $('#maps').find(':not(.ng-sope)').remove()
                 $('.thirteen.wide.column').css('display','table-cell')
                 var $t = angular.element(target);
+                $t.siblings().removeClass('active')
+                $t.addClass('active blue')
                 if ($t.hasClass("header")){
                     id = $t.parent().parent().attr('id')
                     }
@@ -251,16 +251,12 @@
                 testfactory = id
                 $.ajax({
                     type:"GET",
-                    url:'/regression/testproject/getproject',
+                    url:'/testproject/getproject',
                     data:{tid:id},
                     success:function(result){
                         $scope.pk=result.pk
                         $scope.name=result.name
-                        $scope.scm=result.scm
-                        $scope.branch=result.branch
-                        $scope.url=result.url
                         $scope.email=result.email
-                        $scope.build=result.build
                         $scope.maps=result.maps
                         $scope.$apply();
                         $('.dropdown.scm').dropdown('set text',result.scm);
@@ -282,7 +278,7 @@
                 $scope.update=function(){
                             $('#loader').dimmer("show");
                             $('#tform').ajaxSubmit({
-                              url:'/regression/testproject/update',
+                              url:'/testproject/update',
                               success:function(result){
                                 $('#loader').dimmer("hide");
                                if (result.status == 'scuess')
@@ -300,13 +296,13 @@
                $scope.delete=function(){
                             $('#loader').dimmer("show");
                             $('#tform').ajaxSubmit({
-                              url:'/regression/testproject/delete',
+                              url:'/testproject/delete',
                               success:function(result){
                                 $('#loader').dimmer("hide");
                                 $('#deletemessage').modal({
                                   closable:false,
                                   onApprove : function() {
-                                    location.href='/regression';
+                                    location.href='/';
                                   }
                                   }).modal('show');
                                 }
@@ -314,5 +310,7 @@
                };
             }
             ]);
-    </script>
+
+
+</script>
 </html>

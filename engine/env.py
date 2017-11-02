@@ -1,16 +1,19 @@
 import os
+import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-Jenkins_rul = 'http://localhost:8080/jenkins/'
-# Jenkins_rul='http://jenkins.derbysoft.tm/jenkins/'
-Doraemon = r'/usr/local/lib/python2.7/site-packages/Doraemon'
+mswindows = (sys.platform == "win32")
+if mswindows:
+    Doraemon = r'C:\Python27\Lib\site-packages\Doraemon'
+else:
+    Doraemon = r'/usr/local/lib/python2.7/site-packages/Doraemon'
 
 opath = os.getcwd()
 project = 'project'
 app = 'app'
 dev = os.path.join(BASE_DIR, project, 'dev')
-test = os.path.join(BASE_DIR, project, 'test')
+test = os.path.join(BASE_DIR, project, 'test_automation')
 report = os.path.join(BASE_DIR, project, 'report')
 log = os.path.join(BASE_DIR, project, 'log')
 top_build = 'top_build'

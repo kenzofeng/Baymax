@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html ng-app="TestJobModule">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'regression/semantic/dist/semantic.min.css' %}">
+    <title>Test Job</title>
+</head>
+<body ng-controller="testpCtrl">
+<div class="ui inverted dimmer" id="pageloader">
+    <div class="ui large text loader">Loading</div>
+</div>
+<div class="ui grid">
+    <div class="sixteen wide column">{% include 'regression/nav.html'%}</div>
+    <div class="ui internally celled grid">
+        <div class="row">
+            <table class="ui compact selectable celled striped blue table">
+                <thead>
+                <tr>
+                    <th>Project Job</th>
+                    <th>Job Status</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Test Automation</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tj in testjobs">
+                    <td ng-bind="tj.name"></td>
+                    <td ng-bind="tj.status"></td>
+                    <td ng-bind="tj.start"></td>
+                    <td ng-bind="tj.end"></td>
+                    <td>
+                        <table class="ui small table very compact">
+                            <thead>
+                            <th>Test</th>
+                            <th>Robot Parameter</th>
+                            <th>Status</th>
+                            <th>runtime log</th>
+                            <th>report</th>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="test in tj.tests">
+                                <td class="collapsing" ng-bind="test.name"></td>
+                                <td class="collapsing" ng-bind="test.parameter"></td>
+                                <td class="collapsing" ng-bind="test.status"></td>
+                                <td class="collapsing">
+                                    <a target='_blank'
+                                       href='/regression/test/log/{% templatetag openvariable %} test.log {% templatetag closevariable %}'>
+                                        <i class='large file text outline icon'></i>
+                                    </a>
+                                </td>
+                                <td class="collapsing">
+                                    <a target='_blank'
+                                       href='/regression/report/{% templatetag openvariable %} test.id {% templatetag closevariable %}'>
+                                        <i class='large file text outline icon'></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+<script src="{% static 'regression/js/jquery-3.0.0.min.js' %}"></script>
+<script src="{% static 'regression/js/jquery.cookie.js' %}"></script>
+<script src="{% static 'regression/js/jquery.form.js' %}"></script>
+<script src="{% static 'regression/js/angular.min.js' %}"></script>
+<script src="{% static 'regression/semantic/dist/semantic.min.js' %}"></script>
+<script type="text/javascript">
+        $(function(){
+            $('#testjob').addClass('active');
+        })
+
+
+
+
+
+
+</script>
+<script type="text/javascript">
+        var TestJobModule=angular.module('TestJobModule', []);
+        TestJobModule.controller('testpCtrl',['$scope','$http','$compile',
+            function($scope,$http,$compile){
+                $http.get('/testjob/getall').success(function(result){
+                    $scope.testjobs=result
+                });
+               ;}
+            ]);
+
+
+
+
+
+
+</script>
+</html>

@@ -1,19 +1,19 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
-from models import Job_Test, build, Map
-import json
-import os
-import env
-from handler.job import *
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
+from engine import env
+from engine.job import *
+from models import Job_Test, Map, Test_Log, Job
 
 
 def job_start(request, project):
     try:
-        job_id = start(request, project)
+        results = start(request, project)
         return HttpResponse(
-            json.dumps({"job_id": job_id, "log": "http://%s/regression/log/%s" % (request.get_host(), job_id)}),
+            # json.dumps({"job_id": job_id, "log": "http://%s/regression/log/%s" % (request.get_host(), job_id)}),
+            results,
             content_type='application/json')
     except Exception, e:
         return HttpResponse(e)
@@ -33,13 +33,35 @@ def job_log_ex(reuqest, jobid):
     return HttpResponse(fst, content_type='text/html')
 
 
+def test_run_log(request, logid):
+    test_log = Test_Log.objects.get(pk=logid)
+    log = test_log.text
+    joblog = ''
+    if log is not None:
+        for l in log.split('\n'):
+            joblog = joblog + "<span>%s</span><br/>" % (l.encode("gbk"))
+        return HttpResponse(joblog, content_type='text/html')
+    else:
+        try:
+            logpath = os.path.join(env.log, test_log.path)
+            if os.path.exists(logpath):
+                f = open(logpath, 'r')
+                fst = f.read()
+                f.close()
+                for l in fst.split('\n'):
+                    joblog = joblog + "<span>%s</span><br/>" % (l)
+        except Exception, e:
+            return HttpResponse(e)
+    return HttpResponse(joblog, content_type='text/html')
+
+
 def job_log(request, jobid):
     job = Job.objects.get(pk=jobid)
     log = job.log.text
     joblog = ''
     if log is not None:
         for l in log.split('\n'):
-            joblog = joblog + "<span>%s</span><br/>" % (l.encode("gbk"))
+            joblog = joblog + "<span>%s</span><br/>" % (l)
         return HttpResponse(joblog, content_type='text/html')
     else:
         try:
@@ -56,10 +78,14 @@ def job_log(request, jobid):
 
 
 def test_log(request, logid):
+    result = ""
     test = Job_Test.objects.get(pk=logid)
     path = os.path.join(env.report, test.report, env.log_html)
-    f = open(path)
-    return HttpResponse(f.read(), content_type='text/html')
+    if os.path.exists(path):
+        f = open(path)
+        result = f.read()
+        f.close()
+    return HttpResponse(result, content_type='text/html')
 
 
 def test_report(request, logid):
@@ -87,6 +113,14 @@ def testproject(request):
     return render(request, 'regression/testproject.html')
 
 
+def testjob(request):
+    return render(request, 'regression/job.html')
+
+
+def testlab(request):
+    return render(request, 'regression/lab.html')
+
+
 @csrf_exempt
 def testproject_add(request):
     name = request.POST['name']
@@ -98,23 +132,11 @@ def testproject_add(request):
 
 @csrf_exempt
 def testproject_update(request):
-    try:
-        mb = build.objects.get(project=request.POST['pk'])
-        mb.build_command = request.POST['build']
-        mb.save()
-    except Exception:
-        mb = build()
-        mb.project = request.POST['name']
-        mb.build_command = request.POST['build']
-        mb.save()
-
     maps = Map.objects.filter(project=request.POST['pk'])
     for m in maps:
         m.delete()
-
     maptest = "map-test-"
     mapurl = "map-url-"
-    mapwar = "map-war-"
     maprobot = "map-robot-"
     for key in request.POST:
         kid = (key.split('-'))[-1]
@@ -123,16 +145,11 @@ def testproject_update(request):
             m.project = request.POST['pk']
             m.test = request.POST['%s%s' % (maptest, kid)]
             m.testurl = request.POST['%s%s' % (mapurl, kid)]
-            m.war = request.POST['%s%s' % (mapwar, kid)]
             m.robot_parameter = request.POST['%s%s' % (maprobot, kid)]
             m.save()
-
     p = Project.objects.get(pk=request.POST['pk'])
     p.name = request.POST['name']
-    p.scm = request.POST['scm']
-    p.devurl = request.POST['url']
     p.email = request.POST['email']
-    p.branch = request.POST['branch']
     p.save()
     return HttpResponse(json.dumps({'status': 'scuess'}), content_type='application/json')
 
@@ -140,11 +157,6 @@ def testproject_update(request):
 @csrf_exempt
 def testproject_delete(request):
     p = Project.objects.get(pk=request.POST['pk'])
-    try:
-        mb = build.objects.get(project=request.POST['pk'])
-        mb.delete()
-    except Exception:
-        pass
     maps = Map.objects.filter(project=request.POST['pk'])
     for m in maps:
         m.delete()
@@ -153,9 +165,44 @@ def testproject_delete(request):
     return HttpResponse(json.dumps({'status': 'scuess'}), content_type='application/json')
 
 
+def testjob_getall(request):
+    list_job = Job.objects.all().order_by('-pk')
+    results = []
+    for job in list_job:
+        tests = []
+        start_time = ""
+        end_time = ''
+        if job.start_time is not None:
+            start_time = job.start_time.strftime('%Y-%m-%d %H:%M:%S')
+        if job.end_time is not None:
+            end_time = job.end_time.strftime('%Y-%m-%d %H:%M:%S')
+        myjob = {'name': job.project, 'status': job.status, 'start': start_time,
+                 'end': end_time, 'tests': tests}
+        for test in job.job_test_set.all():
+            tests.append(
+                {'name': test.name, 'parameter': test.robot_parameter, 'status': test.status, 'log': test.test_log.id,
+                 'id': test.id})
+        if not tests:
+            continue
+        results.append(myjob)
+    return HttpResponse(json.dumps(results), content_type='application/json')
+
+
 def testproject_getall(request):
     list_project = Project.objects.all()
     return HttpResponse(serializers.serialize("json", list_project), content_type='application/json')
+
+def testlab_getall(request):
+    results = []
+    list_project = Project.objects.all()
+    for project in list_project:
+        tests = []
+        maps = Map.objects.filter(project=project.name, use=True)
+        mylab={'name':project.name,'tests':tests}
+        for map in maps:
+            tests.append({'name':map.test,'url':map.testurl,'parameter':map.robot_parameter})
+        results.append(mylab)
+    return HttpResponse(json.dumps(results), content_type='application/json')
 
 
 def testproject_testproject(request):

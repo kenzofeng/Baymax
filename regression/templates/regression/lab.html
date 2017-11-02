@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="TestLabModule">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'regression/semantic/dist/semantic.min.css' %}">
+    <title>Test Job</title>
+</head>
+<body ng-controller="testpCtrl">
+<div class="ui inverted dimmer" id="pageloader">
+    <div class="ui large text loader">Loading</div>
+</div>
+<div class="ui grid">
+    <div class="sixteen wide column">{% include 'regression/nav.html'%}</div>
+    <div class="ui internally celled grid">
+        <div class="row">
+            <table class="ui compact selectable celled striped blue table">
+                <thead>
+                <tr>
+                    <th>Project Job</th>
+                    <th>Test Automation</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tp in testproject">
+                    <td ng-bind="tp.name"></td>
+                    <td class="collapsing">
+                        <table class="ui small table very compact">
+                            <thead>
+                            <th>Test</th>
+                            <th>URL</th>
+                            <th>Robot Parameter</th>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="test in tp.tests">
+                                <td class="collapsing" ng-bind="test.name"></td>
+                                <td class="collapsing" ng-bind="test.url"></td>
+                                <td class="collapsing" ng-bind="test.parameter"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <a class="ui blue button" target='_blank'
+                           href='/{% templatetag openvariable %} tp.name {% templatetag closevariable %}/start/'>Run
+                    </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+<script src="{% static 'regression/js/jquery-3.0.0.min.js' %}"></script>
+<script src="{% static 'regression/js/jquery.cookie.js' %}"></script>
+<script src="{% static 'regression/js/jquery.form.js' %}"></script>
+<script src="{% static 'regression/js/angular.min.js' %}"></script>
+<script src="{% static 'regression/semantic/dist/semantic.min.js' %}"></script>
+<script type="text/javascript">
+        $(function(){
+            $('#testlab').addClass('active');
+        })
+
+
+
+</script>
+<script type="text/javascript">
+        var TestLabModule=angular.module('TestLabModule', []);
+        TestLabModule.controller('testpCtrl',['$scope','$http','$compile',
+            function($scope,$http,$compile){
+                $http.get('/testlab/getall').success(function(result){
+                    $scope.testproject=result
+                });
+               ;}
+            ]);
+
+</script>
+</html>
