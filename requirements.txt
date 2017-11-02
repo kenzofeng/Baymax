@@ -1,4 +1,4 @@
 Django==1.11.5
 Tenjin==1.1.1
 GitPython==2.1.7
-lxml==4.1.0
+lxml==4.1.0s
