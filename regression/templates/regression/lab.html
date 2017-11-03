@@ -41,9 +41,7 @@
                         </table>
                     </td>
                     <td>
-                        <a class="ui blue button" target='_blank'
-                           href='/{% templatetag openvariable %} tp.name {% templatetag closevariable %}/start/'>Run
-                    </a>
+                        <button class="ui blue button" ng-click="tojob(tp)">Run</button>
                     </td>
                 </tr>
                 </tbody>
@@ -51,6 +49,34 @@
         </div>
     </div>
 </div>
+</div>
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Project Name: {% templatetag openvariable %}tp.name{% templatetag closevariable %}
+    </div>
+    <div class="content">
+        <div class='ui message'>
+            Current Job
+            <table class="ui small table very compact">
+                <thead>
+                <th>Job Name</th>
+                <th>Status</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="job in jobs">
+                    <td ng-bind="job.name"></td>
+                    <td ng-bind="job.status"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-bind='automation'></div>
+    </div>
+    <div class="actions">
+        <div class="ui red deny button">Cancel</div>
+        <div class="ui green approve button">Run</div>
+    </div>
 </div>
 </body>
 <script src="{% static 'regression/js/jquery-3.0.0.min.js' %}"></script>
@@ -65,6 +91,14 @@
 
 
 
+
+
+
+
+
+
+
+
 </script>
 <script type="text/javascript">
         var TestLabModule=angular.module('TestLabModule', []);
@@ -73,8 +107,44 @@
                 $http.get('/testlab/getall').success(function(result){
                     $scope.testproject=result
                 });
-               ;}
+                $scope.tojob=function(tp){
+                $scope.tp = tp;
+                jboname = tp.name;
+                $.ajax({
+                    type:"GET",
+                    url:'/testjob/getall/5',
+                    success:function(result){
+                        $scope.jobs=result;
+                        $scope.$apply();
+                        $('.ui.modal').modal({
+                        onApprove : function() {
+                            $.ajax({
+                            type:"GET",
+                            url:"/"+jboname+"/start/",
+                            success:function(){
+                            }
+                            })
+                            location.href='/testjob';
+                        }
+                    }).modal('show');
+                        }
+                })}}
             ]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </script>
 </html>

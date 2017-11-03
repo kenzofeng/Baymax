@@ -10,7 +10,7 @@ urlpatterns = [
                   url(r'^testjob/$', views.testjob, name='testjob'),
                   url(r'^testlab/$', views.testlab, name='testlab'),
                   url(r'^testlab/getall$', views.testlab_getall),
-                  url(r'^testjob/getall$', views.testjob_getall,),
+                  url(r'^testjob/getall/(?P<number>\d+)$', views.testjob_getall,),
                   url(r'^testproject/getall$', views.testproject_getall),
                   url(r'^testproject/getproject', views.testproject_testproject),
                   url(r'^testproject/add', views.testproject_add),

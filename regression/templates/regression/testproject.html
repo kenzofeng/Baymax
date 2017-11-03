@@ -120,28 +120,6 @@
         <div class="ui green approve button">OK</div>
     </div>
 </div>
-<div class="ui modal" id="xmlmodal">
-    <i class="close icon"></i>
-    <div class="header">Data</div>
-    <div class="content">
-        <textarea id='textxml' style='height:600px;width:100%'></textarea>
-    </div>
-    <div class="actions">
-        <div class="ui cancel button">Cancel</div>
-        <div class="ui green approve button">Save</div>
-    </div>
-</div>
-<div class="ui modal" id="csvmodal">
-    <i class="close icon"></i>
-    <div class="header">Data</div>
-    <div class="content">
-        <textarea id='textcsv' style='height:600px;width:100%'></textarea>
-    </div>
-    <div class="actions">
-        <div class="ui cancel button">Cancel</div>
-        <div class="ui green approve button">Save</div>
-    </div>
-</div>
 </body>
 <script src="{% static 'regression/js/jquery-3.0.0.min.js' %}"></script>
 <script src="{% static 'regression/js/jquery.cookie.js' %}"></script>
@@ -160,14 +138,9 @@
                     +"<label>Automation URL:</label>"
                     +"<input type='text' name='map-url-"+id+"'></div>"
                     +"</div>"
-                    +"<div class='two fields'>"
-                    +"<div class='required field'>"
-                    +"<label>WARs:</label>"
-                    +"<input type='text' placeholder='xxxx.war:appname,xxxx.war:appname'   name='map-war-"+id+"'></div>"
                     +"<div class='field'>"
                     +"<label>Robot Parameters:</label>"
                     +"<input type='text' name='map-robot-"+id+"'></div>"
-                    +"</div>"
                     +"<button  class='ui red button'>Delete</button >"
                     +"</div>"
             return str

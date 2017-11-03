@@ -166,8 +166,8 @@ def testproject_delete(request):
     return HttpResponse(json.dumps({'status': 'scuess'}), content_type='application/json')
 
 
-def testjob_getall(request):
-    list_job = Job.objects.all().order_by('-pk')
+def testjob_getall(request,number):
+    list_job = Job.objects.all().order_by('-pk')[:number]
     results = []
     for job in list_job:
         tests = []

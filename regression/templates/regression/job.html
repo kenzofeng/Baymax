@@ -87,7 +87,7 @@
         var TestJobModule=angular.module('TestJobModule', []);
         TestJobModule.controller('testpCtrl',['$scope','$http','$compile',
             function($scope,$http,$compile){
-                $http.get('/testjob/getall').success(function(result){
+                $http.get('/testjob/getall/30').success(function(result){
                     $scope.testjobs=result
                 });
                ;}
