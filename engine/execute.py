@@ -35,10 +35,7 @@ class Execute():
         self.job.save()
         job_tests = self.job.job_test_set.all()
         for test in job_tests:
-            try:
-                self.execute(test)
-            except Exception, e:
-                utility.logmsg(self.job.log.path, e)
+            self.execute(test)
         self.job.status = 'done'
         self.job.end_time = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
         self.job.save()

@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 import pysvn
 import tenjin
 from lxml import etree
-
+import zlib
 import env
 
 tenjin.set_template_encoding("utf-8")
@@ -75,6 +75,10 @@ def get_result_fromxml(outputpath):
 
 
 def remove_file(fpath):
+    try:
+        os.remove(fpath)
+    except Exception:
+        pass
     if mswindows:
         os.system('rd /S/Q %s' % fpath)
     else:
@@ -83,20 +87,24 @@ def remove_file(fpath):
 
 def save_test_log(test):
     log_path = os.path.join(env.log, test.test_log.path)
-    f = open(log_path, 'r')
+    f = open(log_path, 'rb')
     fstr = f.read()
     f.close()
-    test.test_log.text = fstr
+    gzipstr = zlib.compress(fstr)
+    test.test_log.text = gzipstr.encode("base64")
     test.test_log.save()
+    remove_file(log_path)
 
 
 def save_log(job):
     log_path = os.path.join(env.log, job.log.path)
-    f = open(log_path, 'r')
+    f = open(log_path, 'rb')
     fstr = f.read()
     f.close()
-    job.log.text = fstr
+    gzipstr = zlib.compress(fstr)
+    job.log.text = gzipstr.encode("base64")
     job.log.save()
+    remove_file(log_path)
 
 
 def set_email(test, host):
@@ -105,6 +113,7 @@ def set_email(test, host):
         "run_time": str(test.job.start_time),
         #                "job_number":test.job.job_number,
         "project": test.job.project,
+        "Automation": test.name,
         'log': 'http://%s/regression/test/log/%s' % (host, test.test_log.id),
         'test_version': test.revision_number,
         'result': test.status,
@@ -119,7 +128,6 @@ def send_email(test, host):
     receiver = test.job.email
     if receiver != '':
         sender = "Daniel.liu@derbysoft.com"
-        #     subject = '%s_%s_%s_%s_%s'%(test.status,test.job.job_number,test.job.dev_revision_number,test.revision_number,test.name)
         subject = '%s_Regression_Test_%s' % (test.job.project, test.status)
         smtpserver = 'mail.derbysoft.com:465'
         username = "Daniel.liu@derbysoft.com"

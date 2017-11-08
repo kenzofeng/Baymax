@@ -2,7 +2,7 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-
+import zlib
 import os
 from engine import env
 from engine.job import *
@@ -12,10 +12,7 @@ from models import Job_Test, Map, Test_Log, Job
 def job_start(request, project):
     try:
         results = start(request, project)
-        return HttpResponse(
-            # json.dumps({"job_id": job_id, "log": "http://%s/regression/log/%s" % (request.get_host(), job_id)}),
-            results,
-            content_type='application/json')
+        return HttpResponse(results, content_type='application/json')
     except Exception, e:
         return HttpResponse(e)
 
@@ -39,8 +36,12 @@ def test_run_log(request, logid):
     log = test_log.text
     joblog = ''
     if log is not None:
+        try:
+            log = zlib.decompress(log.decode("base64"))
+        except Exception:
+            pass
         for l in log.split('\n'):
-            joblog = joblog + "<span>%s</span><br/>" % (l.encode("gbk"))
+            joblog = joblog + "<span>%s</span><br/>" % (l)
         return HttpResponse(joblog, content_type='text/html')
     else:
         try:
@@ -61,6 +62,10 @@ def job_log(request, jobid):
     log = job.log.text
     joblog = ''
     if log is not None:
+        try:
+            log = zlib.decompress(log.decode("base64"))
+        except Exception:
+            pass
         for l in log.split('\n'):
             joblog = joblog + "<span>%s</span><br/>" % (l)
         return HttpResponse(joblog, content_type='text/html')
@@ -166,7 +171,7 @@ def testproject_delete(request):
     return HttpResponse(json.dumps({'status': 'scuess'}), content_type='application/json')
 
 
-def testjob_getall(request,number):
+def testjob_getall(request, number):
     list_job = Job.objects.all().order_by('-pk')[:number]
     results = []
     for job in list_job:

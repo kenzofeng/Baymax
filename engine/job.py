@@ -19,7 +19,7 @@ def start(request, project):
         job.save()
         log = Log()
         log.job = job
-        log.path = "%s/%s.log" % (logdir, datetime.utcnow().strftime('%H%M%S'))
+        log.path = "%s/%s_%s.log" % (logdir, p.name, datetime.utcnow().strftime('%H%M%S'))
         log.save()
         utility.logmsg(log.path, "")
         execute = Execute(job, request.get_host())
@@ -35,6 +35,7 @@ def start(request, project):
         utility.logmsg(job.log.path, str(e))
         utility.save_log(job)
         raise Exception(e)
+
 
 def get_results(request, job):
     jtests = job.job_test_set.all()
