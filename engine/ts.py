@@ -26,7 +26,7 @@ def test_automation_init(job):
         job_test.save()
         log = Test_Log()
         log.test = job_test
-        log.path = "%s/%s_%s.log" % (logdir, m.test, datetime.utcnow().strftime('%H%M%S'))
+        log.path = "%s/Test_%s_%s.log" % (logdir, m.test, datetime.utcnow().strftime('%H%M%S'))
         log.save()
 
 

@@ -19,7 +19,7 @@ def start(request, project):
         job.save()
         log = Log()
         log.job = job
-        log.path = "%s/%s_%s.log" % (logdir, p.name, datetime.utcnow().strftime('%H%M%S'))
+        log.path = "%s/project_%s_%s.log" % (logdir, p.name, datetime.utcnow().strftime('%H%M%S'))
         log.save()
         utility.logmsg(log.path, "")
         execute = Execute(job, request.get_host())
