@@ -127,9 +127,9 @@ def set_email(test, host):
 def send_email(test, host):
     receiver = test.job.email
     if receiver != '':
-        sender = "Daniel.liu@derbysoft.com"
+        sender = "Automation_Regression_System@derbygroupmail.com"
         subject = '%s_Regression_Test_%s' % (test.job.project, test.status)
-        smtpserver = 'mail.derbysoft.com:465'
+        smtpserver = 'mail.derbygroupmail.com'
         username = "warrior@derbygroupmail.com"
         password = 'oWpR7svZHm3rxapF'
         msg = MIMEText(set_email(test, host), 'html')
