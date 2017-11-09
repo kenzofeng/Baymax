@@ -130,8 +130,8 @@ def send_email(test, host):
         sender = "Daniel.liu@derbysoft.com"
         subject = '%s_Regression_Test_%s' % (test.job.project, test.status)
         smtpserver = 'mail.derbysoft.com:465'
-        username = "Daniel.liu@derbysoft.com"
-        password = 'Lf1988720'
+        username = "warrior@derbygroupmail.com"
+        password = 'oWpR7svZHm3rxapF'
         msg = MIMEText(set_email(test, host), 'html')
         msg['Subject'] = subject
         smtp = smtplib.SMTP_SSL(smtpserver)
