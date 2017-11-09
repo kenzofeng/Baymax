@@ -7,6 +7,7 @@ import os
 from engine import env
 from engine.job import *
 from models import Job_Test, Map, Test_Log, Job
+from engine import utility
 
 
 def job_start(request, project):
@@ -144,6 +145,7 @@ def testproject_update(request):
     maptest = "map-test-"
     mapurl = "map-url-"
     maprobot = "map-robot-"
+    mapuse = 'map-use-'
     for key in request.POST:
         kid = (key.split('-'))[-1]
         if key.find(maptest) != -1:
@@ -152,6 +154,10 @@ def testproject_update(request):
             m.test = request.POST['%s%s' % (maptest, kid)]
             m.testurl = request.POST['%s%s' % (mapurl, kid)]
             m.robot_parameter = request.POST['%s%s' % (maprobot, kid)]
+            if '%s%s' % (mapuse, kid) in request.POST:
+                m.use = True
+            else:
+                m.use = False
             m.save()
     p = Project.objects.get(pk=request.POST['pk'])
     p.name = request.POST['name']

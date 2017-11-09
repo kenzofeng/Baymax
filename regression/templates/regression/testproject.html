@@ -60,12 +60,24 @@
                                            name="map-url-{% templatetag openvariable %}map.pk{% templatetag closevariable %}"
                                            ng-model="map.url"></div>
                             </div>
-                            <div class="field">
-                                <label>Robot Parameters:</label>
-                                <input type="text"
-                                       name="map-robot-{% templatetag openvariable %}map.pk{% templatetag closevariable %}"
-                                       ng-model="map.robot"></div>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Robot Parameters:</label>
+                                    <input type="text"
+                                           name="map-robot-{% templatetag openvariable %}map.pk{% templatetag closevariable %}"
+                                           ng-model="map.robot"></div>
+                                <div class="field">
+                                    <label>Enable</label>
+                                    <div class="ui toggle checkbox">
+                                        <input type="checkbox"
+                                               ng-checked="{% templatetag openvariable %}map.use{% templatetag closevariable %}"
+                                               name="map-use-{% templatetag openvariable %}map.pk{% templatetag closevariable %}">
+                                        <label></label>
+                                    </div>
+                                </div>
+                            </div>
                             <button class="ui red button">Delete</button>
+
                         </div>
                     </div>
                     <input type="text" name="mapcount" ng-model="maps[maps.length-1].pk" style="display:none">
@@ -138,13 +150,19 @@
                     +"<label>Automation URL:</label>"
                     +"<input type='text' name='map-url-"+id+"'></div>"
                     +"</div>"
+                    +"<div class='two fields'>"
                     +"<div class='field'>"
                     +"<label>Robot Parameters:</label>"
                     +"<input type='text' name='map-robot-"+id+"'></div>"
+                    +"<div class='field'>"
+                    +"<label>Enable:</label>"
+                    +"<div class='ui toggle checkbox'><input type='checkbox' checked='true' name='map-use-"+id+"'><label></label></div></div>"
+                    +"</div>"
                     +"<button  class='ui red button'>Delete</button >"
                     +"</div>"
             return str
         };
+
 
 
 </script>
@@ -194,6 +212,7 @@
                     .modal('show');
             });
         })
+
 
 
 </script>
@@ -283,6 +302,7 @@
                };
             }
             ]);
+
 
 
 </script>

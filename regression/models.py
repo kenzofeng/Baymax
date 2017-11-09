@@ -20,7 +20,7 @@ class Project(models.Model):
         mlist = []
         maps = Map.objects.filter(project=self.name)
         for m in maps:
-            mdatas = {'pk': m.pk, 'test': m.test, 'url': m.testurl, 'robot': m.robot_parameter}
+            mdatas = {'pk': m.pk, 'test': m.test, 'url': m.testurl, 'robot': m.robot_parameter,'use':m.use}
             mlist.append(mdatas)
         data = {'pk': self.name, 'name': self.name, 'email': self.email, 'maps': mlist}
         return json.dumps(data)

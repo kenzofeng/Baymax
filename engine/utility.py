@@ -191,3 +191,9 @@ def delete_svn_unversioned(self, rootdir):
                 if entry is None:
                     os.remove(filepath)
                     print filepath
+
+def conver_To_Boolean(value):
+    if value.lower() == "true":
+        return True
+    else:
+        return False
