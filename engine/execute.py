@@ -69,14 +69,14 @@ class Execute():
                         break
                 test.status = utility.get_result_fromxml(os.path.join(reportpath, env.output_xml))
                 test.save()
-                utility.send_email(test, self.ip)
             else:
                 test.status = 'error'
                 test.save()
-                utility.send_email(test, self.ip)
+            utility.send_email(test, self.ip)
         except Exception, e:
             test.status = 'error'
             test.save()
+            utility.send_email(test, self.ip)
             utility.logmsg(test.test_log.path, e)
         finally:
             utility.save_test_log(test)
