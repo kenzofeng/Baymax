@@ -157,12 +157,12 @@ def run_autobuild(test):
     if os.path.exists(test_app_autobuid):
         command = "python %s run" % (test_app_autobuid)
         logmsg(test.test_log.path, command)
-        os.chdir(test_app_autobuid)
+        os.chdir(os.path.join(env.test, test.name, 'app'))
         autobuild = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
     elif os.path.exists(test_app_autobuild_autobuid):
         command = "python %s run" % (test_app_autobuild_autobuid)
         logmsg(test.test_log.path, command)
-        os.chdir(test_app_autobuild_autobuid)
+        os.chdir(os.path.join(env.test, test.name, 'app', 'autobuild'))
         autobuild = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
     else:
         logmsg(test.test_log.path, "not found autobuild.py to build your app")
