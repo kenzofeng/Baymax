@@ -150,19 +150,23 @@ def update_Doraemon():
 
 
 def run_autobuild(test):
+    opath = os.getcwd()
     test_app_autobuid = os.path.join(env.test, test.name, 'app', 'autobuild.py')
     test_app_autobuild_autobuid = os.path.join(env.test, test.name, 'app', 'autobuild', 'autobuild.py')
     autobuild = None
     if os.path.exists(test_app_autobuid):
         command = "python %s run" % (test_app_autobuid)
         logmsg(test.test_log.path, command)
+        os.chdir(test_app_autobuid)
         autobuild = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
     elif os.path.exists(test_app_autobuild_autobuid):
         command = "python %s run" % (test_app_autobuild_autobuid)
         logmsg(test.test_log.path, command)
+        os.chdir(test_app_autobuild_autobuid)
         autobuild = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
     else:
         logmsg(test.test_log.path, "not found autobuild.py to build your app")
+        os.chdir(opath)
         return True
     while True:
         log = autobuild.stdout.readline()
