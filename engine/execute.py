@@ -65,6 +65,8 @@ class Execute():
                 while True:
                     log = robot.stdout.readline()
                     utility.logmsgs(test.test_log.path, log.replace('\r\n', ''))
+                    if 'Report:' in log and 'report.html' in log:
+                        break
                     if robot.poll() is not None:
                         break
                 test.status = utility.get_result_fromxml(os.path.join(reportpath, env.output_xml))
