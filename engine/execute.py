@@ -84,4 +84,5 @@ class Execute():
             utility.save_test_log(test)
             if robot is not None:
                 robot.terminate()
+                robot.kill()
             os.chdir(opath)
