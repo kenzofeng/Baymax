@@ -33,6 +33,7 @@
                 </div>
                 <form class="ui form" id="tform" method="post" enctype="multipart/form-data">
                     <h4 class="ui blue dividing header">Information</h4>
+                    <button id="getURL" class="ui blue tiny button">URL</button>
                     <input type="text" name="pk" ng-model="pk" style="display:none">
                     <div class="two fields">
                         <div class="required field">
@@ -100,6 +101,16 @@
         </div>
     </div>
 </div>
+<div class="ui modal" id="Gurl">
+    <i class="close icon"></i>
+    <div class="header">Generate URL</div>
+    <div class="content">
+      <h3 class="ui header"></h3>
+    </div>
+    <div class="actions">
+      <div class="ui red deny button">close</div>
+    </div>
+  </div>
 <div class="ui large modal" id="newtestproject">
     <i class="close icon"></i>
     <div class="header">Test Project</div>
@@ -188,6 +199,16 @@
 
             }
             ;
+      $('#getURL').click(function(){
+       project = $('input[name=name]').val()
+       url ="curl "+window.location.href+project+"/start"
+       $('#Gurl').find('h3').text(url);
+       $('#Gurl')
+          .modal({
+            closable:false
+          })
+            .modal('show');
+    });
         $menuItem.on('click', handler.activate);
         $dropdown.dropdown('save defaults');
             $('#maps').on('click','.red.button',function(){
