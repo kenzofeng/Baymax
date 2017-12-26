@@ -201,7 +201,7 @@
             ;
       $('#getURL').click(function(){
        project = $('input[name=name]').val()
-       url ="curl "+window.location.href+project+"/start"
+       url ="curl -s "+window.location.href+project+"/start"
        $('#Gurl').find('h3').text(url);
        $('#Gurl')
           .modal({
