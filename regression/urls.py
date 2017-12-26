@@ -6,7 +6,7 @@ from regression import views
 urlpatterns = [
                   url(r'(?P<project>.*)/start', views.job_start),
                   url(r'^$', views.testproject),
-                  url(r'^testproject/$', views.testproject, name='testproject'),
+                  url(r'^$', views.testproject, name='testproject'),
                   url(r'^testjob/$', views.testjob, name='testjob'),
                   url(r'^testlab/$', views.testlab, name='testlab'),
                   url(r'^testlab/getall$', views.testlab_getall),
