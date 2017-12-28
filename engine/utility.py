@@ -173,7 +173,7 @@ def run_autobuild(test):
         logmsgs(test.test_log.path, log.replace('\r\n', ''))
         if '|-ERROR' in log:
             return False
-        if 'FileNotFoundException' in log:
+        if 'File is not exists' in log:
             return False
         if autobuild.poll() is not None:
             return True
