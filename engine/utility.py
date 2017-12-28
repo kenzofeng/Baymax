@@ -171,10 +171,10 @@ def run_autobuild(test):
     while True:
         log = autobuild.stdout.readline()
         logmsgs(test.test_log.path, log.replace('\r\n', ''))
-        if 'ERROR' in log:
+        if '|-ERROR' in log:
             return False
         if 'FileNotFoundException' in log:
-            return  False
+            return False
         if autobuild.poll() is not None:
             return True
 
@@ -197,6 +197,7 @@ def delete_svn_unversioned(self, rootdir):
                 if entry is None:
                     os.remove(filepath)
                     print filepath
+
 
 def conver_To_Boolean(value):
     if value.lower() == "true":
