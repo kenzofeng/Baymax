@@ -103,20 +103,20 @@ def test_report(request, logid):
 
 def test_cache(request, logid, cid):
     test = Job_Test.objects.get(pk=logid)
-    path = os.path.join(env.report, test.job_test_result.report,'cache',cid)
+    path = os.path.join(env.report, test.report,'cache',cid)
     f = open(path)
     return HttpResponse(f.read(), content_type='text')
 
 def test_new_compare(request, logid, cid):
     test = Job_Test.objects.get(pk=logid)
-    path = os.path.join(env.report, test.job_test_result.report,'compare',cid)
+    path = os.path.join(env.report, test.report,'compare',cid)
     f = open(path)
     return HttpResponse(f.read(), content_type='text/html')
 
 
 def test_new_redfile(request, logid, redfile):
     test = Job_Test.objects.get(pk=logid)
-    path = os.path.join(env.report, test.job_test_result.report,'compare', env.deps, redfile)
+    path = os.path.join(env.report, test.report,'compare', env.deps, redfile)
     f = open(path)
     return HttpResponse(f.read(), content_type='text/css')
 
